@@ -2,10 +2,16 @@ FROM eclipse-temurin:21
 
 WORKDIR /app
 
-COPY Anka.jar Anka.jar
+COPY .mvn/ .mvn
+
+COPY mvnw pom.xml ./
 
 COPY .env .env
 
+RUN ./mvnw dependency:go-offline
+
+COPY src ./src
+
 EXPOSE 8080
 
-CMD ["java", "-jar", "Anka.jar"]
+CMD ["./mvnw", "spring-boot:run"]
