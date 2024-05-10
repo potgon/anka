@@ -1,10 +1,10 @@
-package com.Anka.Anka;
+package dev.Anka;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class AnkaApplicationTests {
+class ApplicationTests {
 
 	@Test
 	void contextLoads() {

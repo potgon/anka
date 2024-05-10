@@ -1,4 +1,4 @@
-package com.Anka.asset;
+package dev.Anka.asset;
 
 import jakarta.persistence.*;
 import lombok.Data;
@@ -12,7 +12,7 @@ public class Asset {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Integer id;
     @Column(name = "ticker", length = 20)
     private String ticker;
     @Column(name = "name", length = 50)

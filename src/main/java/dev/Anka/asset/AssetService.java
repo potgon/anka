@@ -1,4 +1,4 @@
-package com.Anka.asset;
+package dev.Anka.asset;
 
 import org.springframework.stereotype.Service;
 
@@ -13,7 +13,7 @@ public class AssetService {
         this.assetRepository = repository;
     }
 
-    public List<Asset> findAllAssetNames() {
+    public List<Asset> getAllAssets() {
         return assetRepository.findAll();
     }
 
