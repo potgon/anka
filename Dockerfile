@@ -2,9 +2,9 @@ FROM eclipse-temurin:21
 
 WORKDIR /app
 
-COPY . .
+COPY Anka.jar Anka.jar
 
-# COPY .env /app/.env INJECT VARIABLES INSTEAD
+COPY .env .env
 
 EXPOSE 8080
 
