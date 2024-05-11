@@ -4,6 +4,14 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
+    environment:
+      - MYSQL_URL=${MYSQL_URL}
+      - MYSQL_USER=${MYSQL_USER}
+      - MYSQL_ROOT_PASS=${MYSQL_ROOT_PASS}
+      - MYSQL_DRIVER=${MYSQL_DRIVER}
+      - SPRING_KAFKA_BOOTSTRAP_SERVERS=${SPRING_KAFKA_BOOTSTRAP_SERVERS}
+      - GITHUB_OAUTH2_CLIENT_ID=${GITHUB_OAUTH2_CLIENT_ID}
+      - GITHUB_OAUTH2_CLIENT_SECRET=${GITHUB_OAUTH2_CLIENT_SECRET}
     ports:
       - ${ANKA_APP_PORT}
     networks:
@@ -11,7 +19,7 @@ services:
     depends_on:
       - mysql
       - kafka
-      - zookeeper
+#      - zookeeper
 
   mysql:
     image: 'mysql:latest'
@@ -27,14 +35,14 @@ services:
     volumes:
       - mysql-data:/var/lib/mysql
 
-  zookeeper:
-    image: 'bitnami/zookeeper:3.9.2'
-    ports:
-      - ${ZOOKEEPER_PORT}
-    networks:
-      - anka-typhoon-network
-    environment:
-      ALLOW_ANONYMOUS_LOGIN: 'yes'
+#  zookeeper:
+#    image: 'bitnami/zookeeper:3.9.2'
+#    ports:
+#      - ${ZOOKEEPER_PORT}
+#    networks:
+#      - anka-typhoon-network
+#    environment:
+#      ALLOW_ANONYMOUS_LOGIN: 'yes'
 
   kafka:
     image: 'bitnami/kafka:3.6.0'
@@ -43,14 +51,16 @@ services:
     networks:
       - anka-typhoon-network
     environment:
-      KAFKA_ADVERTISED_LISTENERS: INSIDE://${KAFKA_ADVERTISED_LISTENERS_INSIDE},OUTSIDE://${KAFKA_ADVERTISED_LISTENERS_OUTSIDE}
-      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: INSIDE:${KAFKA_LISTENER_SECURITY_PROTOCOL_MAP},OUTSIDE:${KAFKA_LISTENER_SECURITY_PROTOCOL_MAP}
-      KAFKA_LISTENERS: INSIDE://${KAFKA_LISTENERS_INSIDE},OUTSIDE://${KAFKA_LISTENERS_OUTSIDE}
-      KAFKA_INTER_BROKER_LISTENER_NAME: ${KAFKA_INTER_BROKER_LISTENER_NAME}
-      KAFKA_CREATE_TOPICS: ${MODEL_QUEUE_TRAIN_TOPIC}
-      KAFKA_CFG_ZOOKEEPER_CONNECT: ${KAFKA_ZOOKEEPER_CONNECT}
-    depends_on:
-      - zookeeper
+      - KAFKA_CFG_NODE_ID=${KAFKA_CFG_NODE_ID}
+      - KAFKA_CFG_PROCESS_ROLES=${KAFKA_CFG_PROCESS_ROLES}
+      - KAFKA_CFG_LISTENERS=${KAFKA_CFG_LISTENERS}
+      - KAFKA_CFG_LISTENER_SECURITY_PROTOCOL_MAP=${KAFKA_CFG_LISTENER_SECURITY_PROTOCOL_MAP}
+      - KAFKA_CFG_CONTROLLER_QUORUM_VOTERS=${KAFKA_CFG_CONTROLLER_QUORUM_VOTERS}
+      - KAFKA_CFG_CONTROLLER_LISTENER_NAMES=${KAFKA_CFG_CONTROLLER_LISTENER_NAMES}
+#      - KAFKA_CFG_ZOOKEEPER_CONNECT=${KAFKA_ZOOKEEPER_CONNECT}
+      - KAFKA_CFG_AUTO_CREATE_TOPICS_ENABLE='true'
+#    depends_on:
+#      - zookeeper
 
 volumes:
   mysql-data:

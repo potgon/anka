@@ -6,8 +6,6 @@ COPY .mvn/ .mvn
 
 COPY mvnw pom.xml ./
 
-COPY .env .env
-
 RUN ./mvnw dependency:go-offline
 
 COPY src ./src
