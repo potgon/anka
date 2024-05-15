@@ -1,4 +1,9 @@
 version: '2'
+
+networks:
+  anka-typhoon-network:
+    driver: bridge
+
 services:
   anka:
     build:
@@ -19,7 +24,6 @@ services:
     depends_on:
       - mysql
       - kafka
-#      - zookeeper
 
   mysql:
     image: 'mysql:latest'
@@ -35,15 +39,6 @@ services:
     volumes:
       - mysql-data:/var/lib/mysql
 
-#  zookeeper:
-#    image: 'bitnami/zookeeper:3.9.2'
-#    ports:
-#      - ${ZOOKEEPER_PORT}
-#    networks:
-#      - anka-typhoon-network
-#    environment:
-#      ALLOW_ANONYMOUS_LOGIN: 'yes'
-
   kafka:
     image: 'bitnami/kafka:3.6.0'
     ports:
@@ -57,14 +52,10 @@ services:
       - KAFKA_CFG_LISTENER_SECURITY_PROTOCOL_MAP=${KAFKA_CFG_LISTENER_SECURITY_PROTOCOL_MAP}
       - KAFKA_CFG_CONTROLLER_QUORUM_VOTERS=${KAFKA_CFG_CONTROLLER_QUORUM_VOTERS}
       - KAFKA_CFG_CONTROLLER_LISTENER_NAMES=${KAFKA_CFG_CONTROLLER_LISTENER_NAMES}
-#      - KAFKA_CFG_ZOOKEEPER_CONNECT=${KAFKA_ZOOKEEPER_CONNECT}
-      - KAFKA_CFG_AUTO_CREATE_TOPICS_ENABLE='true'
-#    depends_on:
-#      - zookeeper
+      - KAFKA_CFG_AUTO_CREATE_TOPICS_ENABLE=true
+    volumes:
+      - kafka-data:/bitnami/kafka
 
 volumes:
   mysql-data:
-
-networks:
-  anka-typhoon-network:
-    driver: bridge
+  kafka-data:
