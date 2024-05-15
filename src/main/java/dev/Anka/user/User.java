@@ -35,6 +35,7 @@ public class User implements UserDetails {
     @Column(name = "is_active", columnDefinition = "tinyint default 1")
     private boolean isActive;
     @Column(name = "role")
+    @Enumerated(EnumType.STRING)
     private Role role;
 
     @Override
